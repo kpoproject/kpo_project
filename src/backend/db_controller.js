@@ -1,1 +1,3 @@
-...
+export class DatabaseController {
+  constructor() {}
+}

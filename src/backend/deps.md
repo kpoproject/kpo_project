@@ -1,0 +1,5 @@
+# Dependdencies
+
+- nodejs
+- npm
+- postgres
