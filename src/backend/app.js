@@ -1,6 +1,6 @@
-const express = require("express");
-// const controller = require('./comicController')
-// const info = require('./utils/info')
+import express from "express";
+import { AppController } from "./search_controller.js";
+import { DatabaseController } from "./db/db_controller.js";
 
 const PORT = 8080;
 const app = express();
