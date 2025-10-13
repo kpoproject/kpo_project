@@ -2,6 +2,8 @@ import express from "express";
 import { AppController } from "./search_controller.js";
 import { DatabaseController } from "./db/db_controller.js";
 
+const appController = new AppController(new DatabaseController({}));
+
 const PORT = 8080;
 const app = express();
 
@@ -12,7 +14,9 @@ app.use((req, res, next) => {
   res.set("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
-app.get("/", (req, res) => res.send("blank"));
+app.get("/", async (req, res) => {
+  res.json(await appController.getNewBooks("", {}));
+});
 // app.get('/', controller.getComics);
 // app.put('/', controller.updateComics);
 // app.delete('/', controller.deleteComic);
