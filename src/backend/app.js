@@ -1,6 +1,7 @@
 import express from "express";
 import { AppController } from "./search_controller.js";
 import { DatabaseController } from "./db/db_controller.js";
+import { assert } from "./assert.js";
 
 const appController = new AppController(new DatabaseController({}));
 
@@ -16,30 +17,28 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.json({ field: "field" });
+  res.json({ status: "ok" });
 });
 
-app.post("/search", async (req, res) => {
-  const { api, query } = req.body;
-  console.assert(api, "Wrong api in request on search/");
+app.post("/search", async (req, res, next) => {
+  try {
+    assert(req.body, "Bad request body");
+    const { api, query } = req.body;
+    assert(api && query !== undefined, "Wrong api in request on search/");
 
-  let queryString = "";
-  if (query) {
-    queryString = "?q=" + query.trim().replaceAll(" ", "+");
+    let queryString = "";
+    if (query) {
+      queryString = "?q=" + query.trim().replaceAll(" ", "+");
+    }
+    const response = await appController.getNewBooks(api + queryString, {});
+
+    res.json(response);
+  } catch (err) {
+    res.json({});
+    next(err);
   }
-  // console.log("STRING: " + queryString + "\n");
-  const response = await appController.getNewBooks(api + queryString, {});
-
-  res.json(response);
 });
-// app.get('/', controller.getComics);
-// app.put('/', controller.updateComics);
-// app.delete('/', controller.deleteComic);
-// app.post('/viewer/tags', controller.updateComicTags);
-// app.post('/viewer/languages', controller.setLanguage);
-// app.post('/viewer/artists', controller.updateArtists);
-// app.post('/viewer/type', controller.setType);
 
 app.listen(PORT, () => {
-  console.log("Succes! " + PORT);
+  console.log("Success! Port: " + PORT);
 });

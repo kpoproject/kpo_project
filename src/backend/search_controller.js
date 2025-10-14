@@ -1,3 +1,5 @@
+import { assert } from "./assert.js";
+
 const fetchData = async (endpoint, method, body) => {
   return fetch(endpoint, {
     method: method,
@@ -7,9 +9,7 @@ const fetchData = async (endpoint, method, body) => {
     body: method === "GET" ? undefined : JSON.stringify(body),
   })
     .then((response) => {
-      if (!response.ok) {
-        throw Error("Error fetching url: " + endpoint);
-      }
+      assert(response.ok, "Error fetching url: " + endpoint);
       return response.json();
     })
     .catch((error) => {
@@ -26,8 +26,8 @@ export class AppController {
   }
 
   async getNewBooks(endpoint, options) {
-    console.assert(endpoint, "Wrong endpoint to get new books");
-    const response = fetchData(endpoint, "GET", options);
+    assert(endpoint, "Wrong endpoint to get new books");
+    let response = fetchData(endpoint, "GET", options);
     return response;
   }
   async getSavedBooks(userId) {}
