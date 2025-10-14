@@ -1,6 +1,9 @@
 const fetchData = async (endpoint, method, body) => {
   return fetch(endpoint, {
     method: method,
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: method === "GET" ? undefined : JSON.stringify(body),
   })
     .then((response) => {
@@ -23,12 +26,8 @@ export class AppController {
   }
 
   async getNewBooks(endpoint, options) {
-    // console.assert(endpoint);
-    const response = fetchData(
-      "https://openlibrary.org/search.json?q=the+lord+of+the+rings",
-      "GET",
-      {},
-    );
+    console.assert(endpoint, "Wrong endpoint to get new books");
+    const response = fetchData(endpoint, "GET", options);
     return response;
   }
   async getSavedBooks(userId) {}

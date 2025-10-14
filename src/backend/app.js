@@ -10,12 +10,27 @@ const app = express();
 app.use(express.json());
 app.use((req, res, next) => {
   res.set("Access-Control-Allow-Origin", "*");
-  res.set("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.set("Access-Control-Allow-Methods", "GET,POST,DELETE");
   res.set("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
-app.get("/", async (req, res) => {
-  res.json(await appController.getNewBooks("", {}));
+
+app.get("/", (req, res) => {
+  res.json({ field: "field" });
+});
+
+app.post("/search", async (req, res) => {
+  const { api, query } = req.body;
+  console.assert(api, "Wrong api in request on search/");
+
+  let queryString = "";
+  if (query) {
+    queryString = "?q=" + query.trim().replaceAll(" ", "+");
+  }
+  // console.log("STRING: " + queryString + "\n");
+  const response = await appController.getNewBooks(api + queryString, {});
+
+  res.json(response);
 });
 // app.get('/', controller.getComics);
 // app.put('/', controller.updateComics);
