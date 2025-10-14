@@ -7,8 +7,8 @@ export class DatabaseController {
   }
 
   async getUser(authorization_token) {
-    // return await this.db.query('SELECT * FROM');
-    return {};
+    return await this.db.query("SELECT * FROM users;");
+    // return {};
   }
 
   async getUserBooks(userId) {
