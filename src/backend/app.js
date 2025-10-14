@@ -1,6 +1,7 @@
 import express from "express";
 import { AppController } from "./search_controller.js";
 import { DatabaseController } from "./db/db_controller.js";
+import { assert } from "./assert.js";
 
 const appController = new AppController(new DatabaseController({}));
 
@@ -10,21 +11,34 @@ const app = express();
 app.use(express.json());
 app.use((req, res, next) => {
   res.set("Access-Control-Allow-Origin", "*");
-  res.set("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.set("Access-Control-Allow-Methods", "GET,POST,DELETE");
   res.set("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
-app.get("/", async (req, res) => {
-  res.json(await appController.getNewBooks("", {}));
+
+app.get("/", (req, res) => {
+  res.json({ status: "ok" });
 });
-// app.get('/', controller.getComics);
-// app.put('/', controller.updateComics);
-// app.delete('/', controller.deleteComic);
-// app.post('/viewer/tags', controller.updateComicTags);
-// app.post('/viewer/languages', controller.setLanguage);
-// app.post('/viewer/artists', controller.updateArtists);
-// app.post('/viewer/type', controller.setType);
+
+app.post("/search", async (req, res, next) => {
+  try {
+    assert(req.body, "Bad request body");
+    const { api, query } = req.body;
+    assert(api && query !== undefined, "Wrong api in request on search/");
+
+    let queryString = "";
+    if (query) {
+      queryString = "?q=" + query.trim().replaceAll(" ", "+");
+    }
+    const response = await appController.getNewBooks(api + queryString, {});
+
+    res.json(response);
+  } catch (err) {
+    res.json({});
+    next(err);
+  }
+});
 
 app.listen(PORT, () => {
-  console.log("Succes! " + PORT);
+  console.log("Success! Port: " + PORT);
 });
