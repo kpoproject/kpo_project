@@ -30,9 +30,17 @@ export class AppController {
     let response = fetchData(endpoint, "GET", options);
     return response;
   }
-  async getSavedBooks(userId) {}
-  async saveBook(userId) {}
-  async deleteBook(userId) {}
-  async deleteUser(userId) {}
-  // async deleteAllBooks(userId) {}
+  async getSavedBooks(userId) {
+    assert(userId, "Bad data for saved books request");
+    let dbResponse = await this.db.getUserBooks(userId);
+    return dbResponse.rows;
+  }
+  async saveBook(userId, bookId) {
+    assert(userId && bookId, "Bad data for saving book request");
+    await this.db.appendBook(userId, bookId);
+  }
+  async deleteBook(userId, bookId) {
+    assert(userId && bookId, "Bad data for book deletion");
+    await this.db.deleteBook(userId, bookId);
+  }
 }
