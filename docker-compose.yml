@@ -7,8 +7,12 @@ services:
     ports:
       - 1337:8080
 
-  #frontend:
-    #  image: node: 18-alpine
+  frontend:
+    build:
+      context: ./src/frontend/
+      dockerfile: Dockerfile
+    #ports:
+
   db:
     image: postgres
     #restart: always
