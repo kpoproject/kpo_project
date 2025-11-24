@@ -3,7 +3,7 @@ Screen {
     layout: grid;
     grid-size: 2 3;
     grid-columns: 2fr 4fr;
-    grid-rows: 4fr 8fr 1fr;
+    grid-rows: 4fr 8fr 2fr;
 }
 
 #main-container {
@@ -16,7 +16,20 @@ Screen {
 
 #input-container {
     width: 100%;
-    height: 15;
+    height: 100%;
+    row-span: 2;
+}
+
+#input-container > InputSection{
+    width: 100%;
+    height: 5;
+}
+
+#input-container.collapsed {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    display: none;
 }
 
 #section1 {
@@ -40,6 +53,14 @@ Screen {
     row-span: 2;
     background: $surface;
     border: dodgerblue;
+    transition: all 200ms in_out_cubic;
+}
+
+#right-pane.fully-expanded {
+    grid-columns: 1fr;
+    grid-rows: 1fr;
+    column-span: 2;
+    row-span: 2;
 }
 
 #left-pane > Static {
@@ -55,6 +76,13 @@ Screen {
     background: $surface;
     border: dodgerblue;
 }
+
+#left-pane.collapsed {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    display: none;
+}
     
 #bottom-pane {
     width: 100%;
@@ -65,9 +93,27 @@ Screen {
     content-align: center middle;
 }
     
-.placeholder {
+#user-info {
     width: 100%;
     height: 100%;
     border: solid green;
     align: center middle;
+    column-span: 2;
+}
+
+.success-message {
+    color: $success;
+    text-style: italic;
+    margin-top: 1;
+    text-align: center;
+}
+
+AuthScreen {
+    background: $surface;
+}
+
+.auth-container {
+    background: $panel;
+    border: round $accent;
+    padding: 2;
 }
