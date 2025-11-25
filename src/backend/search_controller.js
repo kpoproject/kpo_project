@@ -1,6 +1,6 @@
 import { assert } from "./assert.js";
 
-const fetchData = async (endpoint, method, body) => {
+const fetchData = (endpoint, method, body) => {
   return fetch(endpoint, {
     method: method,
     headers: {

@@ -6,10 +6,16 @@ export class DatabaseController {
     this.db = dbPool;
   }
 
-  async getUser(authorization_token) {
+  async validateUser({ username, password }) {
+    return await this.db.query(
+      "SELECT true as present FROM users WHERE username = $1 AND password = $2",
+      [username, password],
+    );
+  }
+  async getUser({ username, password }) {
     return await this.db.query(
       "SELECT id FROM users WHERE username = $1 AND password = $2",
-      [authorization_token.username, authorization_token.password],
+      [username, password],
     );
   }
 
@@ -31,10 +37,10 @@ export class DatabaseController {
     return response;
   }
 
-  async addUser(authorization_token) {
+  async addUser({ username, password }) {
     return await this.db.query(
       "INSERT INTO users (username, password) values ($1, $2) RETURNING id",
-      [authorization_token.username, authorization_token.password],
+      [username, password],
     );
   }
   async deleteUser(userId) {
