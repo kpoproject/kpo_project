@@ -30,17 +30,20 @@ export class AppController {
     let response = fetchData(endpoint, "GET", options);
     return response;
   }
-  async getSavedBooks(userId) {
-    assert(userId, "Bad data for saved books request");
-    let dbResponse = await this.db.getUserBooks(userId);
+
+  // need to recieve id username and password not only id
+  async getSavedBooks(userid, password) {
+    let dbResponse = await this.db.getUserBooks(userid, password);
     return dbResponse.rows;
   }
-  async saveBook(userId, bookId) {
-    assert(userId && bookId, "Bad data for saving book request");
-    await this.db.appendBook(userId, bookId);
+
+  // need to recieve id username and password not only id
+  async saveBook(userid, password, bookid) {
+    await this.db.appendBook(userid, password, bookid);
   }
-  async deleteBook(userId, bookId) {
-    assert(userId && bookId, "Bad data for book deletion");
-    await this.db.deleteBook(userId, bookId);
+
+  // need to recieve id username and password not only id
+  async deleteBook(userid, password, bookid) {
+    await this.db.deleteBook(userid, password, bookid);
   }
 }

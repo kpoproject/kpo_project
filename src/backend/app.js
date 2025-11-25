@@ -26,20 +26,18 @@ app.get("/", (req, res) => {
   res.json({ status: "ok" });
 });
 
-const try_catch_next_wrapper = (body, req, res, next) => {
+const try_catch_next_wrapper = async (body, req, res, next) => {
   try {
-    body(req, res).then();
+    assert(req.body, "Bad request body");
+    await body(req, res);
   } catch (err) {
     res.json({ success: false });
     next(err);
   }
 };
 
-// const require_auth = ({ username, password }) => {};
-
 app.post("/search", async (req, res, next) => {
   const body = async (req, res) => {
-    assert(req.body, "Bad request body");
     const { api, query } = req.body;
     assert(api && query !== undefined, "Wrong api in request on search/");
 
@@ -52,12 +50,11 @@ app.post("/search", async (req, res, next) => {
     res.json({ api_response: response, success: response ? true : false });
   };
 
-  try_catch_next_wrapper(body, req, res, next);
+  await try_catch_next_wrapper(body, req, res, next);
 });
 
 app.post("/login", async (req, res, next) => {
   const body = async (req, res) => {
-    assert(req.body, "Bad request body");
     const { username, password } = req.body;
     assert(username && password, "Wrong auth token in request on login/");
 
@@ -69,12 +66,12 @@ app.post("/login", async (req, res, next) => {
       success: id === undefined ? false : true,
     });
   };
-  try_catch_next_wrapper(body, req, res, next);
+
+  await try_catch_next_wrapper(body, req, res, next);
 });
 
 app.post("/register", async (req, res, next) => {
   const body = async (req, res) => {
-    assert(req.body, "Bad request body");
     const { username, password } = req.body;
     assert(username && password, "Wrong auth token in request on register/");
 
@@ -86,57 +83,62 @@ app.post("/register", async (req, res, next) => {
       success: id === undefined ? false : true,
     });
   };
-  try_catch_next_wrapper(body, req, res, next);
+  await try_catch_next_wrapper(body, req, res, next);
 });
 
 app.post("/deleteuser", async (req, res, next) => {
   const body = async (req, res) => {
-    assert(req.body, "Bad request body");
-    const { userid, password } = req.body;
-    assert(userid && password, "Wrong auth token in request on deleteuser/");
+    const { userid, username, password } = req.body;
+    assert(
+      userid && username && password,
+      "Wrong auth token in request on deleteuser/",
+    );
 
-    let succ = await loginManager.deleteUser(userid, password);
+    let succ = await loginManager.deleteUser(userid, username, password);
     res.json({
       success: succ ? false : true,
     });
   };
-  try_catch_next_wrapper(body, req, res, next);
+  await try_catch_next_wrapper(body, req, res, next);
 });
 
 app.post("/lib/addbook", async (req, res, next) => {
   const body = async (req, res) => {
-    assert(req.body, "Bad request body");
-    const { userid, bookid } = req.body;
-    assert(userid && bookid, "Wrong token in request on lib/addbook/");
+    const { userid, bookid, password } = req.body;
+    assert(
+      userid && bookid && password,
+      "Wrong token in request on lib/addbook/",
+    );
 
-    let response = await appController.saveBook(userid, bookid);
+    let response = await appController.saveBook(userid, password, bookid);
     res.json({ success: true });
   };
-  try_catch_next_wrapper(body, req, res, next);
+  await try_catch_next_wrapper(body, req, res, next);
 });
 
 app.post("/lib/removebook", async (req, res, next) => {
   const body = async (req, res) => {
-    assert(req.body, "Bad request body");
-    const { userid, bookid } = req.body;
-    assert(userid && bookid, "Wrong token in request on lib/removebook/");
+    const { userid, password, bookid } = req.body;
+    assert(
+      userid && bookid && password,
+      "Wrong token in request on lib/removebook/",
+    );
 
-    let response = await appController.deleteBook(userid, bookid);
+    let response = await appController.deleteBook(userid, password, bookid);
     res.json({ success: true });
   };
-  try_catch_next_wrapper(body, req, res, next);
+  await try_catch_next_wrapper(body, req, res, next);
 });
 
 app.post("/lib", async (req, res, next) => {
   const body = async (req, res) => {
-    assert(req.body, "Bad request body");
-    const { userid } = req.body;
-    assert(userid, "Wrong token in request on /lib");
+    const { userid, password } = req.body;
+    assert(userid && password, "Wrong auth token in request on /lib");
 
-    let response = await appController.getSavedBooks(userid);
+    let response = await appController.getSavedBooks(userid, password);
     res.json({ books: response, success: response ? true : false });
   };
-  try_catch_next_wrapper(body, req, res, next);
+  await try_catch_next_wrapper(body, req, res, next);
 });
 
 app.listen(PORT, () => {

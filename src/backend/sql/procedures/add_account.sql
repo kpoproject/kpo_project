@@ -1,6 +1,4 @@
-CREATE OR REPLACE PROCEDURE add_new_account(usernm CHAR(64), passwd CHAR(64)) LANGUAGE plpgsql AS $$
--- DECLARE
---   user_collection INTEGER;
+CREATE OR REPLACE PROCEDURE add_new_account(usernm users., passwd CHAR(64)) LANGUAGE plpgsql AS $$
   BEGIN
     INSERT 
 

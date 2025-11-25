@@ -7,23 +7,18 @@ export class LoginManager {
   }
 
   async login(username, password) {
-    let dbResponse = await this.db.getUser({
-      username: username,
-      password: password,
-    });
+    let dbResponse = await this.db.getUser(username, password);
+    console.log(dbResponse);
     return dbResponse.rows ? dbResponse.rows[0].id : undefined;
   }
 
   async register(username, password) {
-    let dbResponse = await this.db.addUser({
-      username: username,
-      password: password,
-    });
+    let dbResponse = await this.db.addUser(username, password);
     return dbResponse.rows ? dbResponse.rows[0].id : undefined;
   }
 
-  async deleteUser(userId, password) {
-    let response = await this.db.deleteUser(userId);
+  async deleteUser(userid, username, password) {
+    let response = await this.db.deleteUser(userid, username, password);
     return true;
   }
 }
