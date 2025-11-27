@@ -14,3 +14,6 @@ CREATE TABLE collection_entry (
   title text NOT NULL,
   UNIQUE (collection_id, key)
 );
+
+ALTER TABLE collection_entry ADD CONSTRAINT fk_collection_id FOREIGN KEY (collection_id) REFERENCES users (id) ON DELETE CASCADE;
+

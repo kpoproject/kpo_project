@@ -1,4 +1,4 @@
-CREATE OR REPLACE PROCEDURE append_book(uid users.id%TYPE, pswd text, cov INTEGER, fyp SMALLINT, k text, lang CHAR(3)[], t text) LANGUAGE plpgsql AS $$
+CREATE OR REPLACE PROCEDURE append_book(uid INTEGER, pswd text, cov INTEGER, fyp SMALLINT, k text, lang CHAR(3)[], t text) LANGUAGE plpgsql AS $$
   BEGIN
     IF (NOT verify_user_identity(uid, pswd)) THEN
       RAISE EXCEPTION 'Bad auth token';
@@ -11,7 +11,7 @@ CREATE OR REPLACE PROCEDURE append_book(uid users.id%TYPE, pswd text, cov INTEGE
   END;
   $$;
 
-CREATE OR REPLACE PROCEDURE remove_book(uid users.id%TYPE, pswd text, k text) LANGUAGE plpgsql AS $$
+CREATE OR REPLACE PROCEDURE remove_book(uid INTEGER, pswd text, k text) LANGUAGE plpgsql AS $$
   BEGIN
     IF (NOT verify_user_identity(uid, pswd)) THEN
       RAISE EXCEPTION 'Bad auth token';
