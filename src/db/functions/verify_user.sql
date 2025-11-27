@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION hash_string(string text)
-RETURNS users.username%TYPE
+RETURNS CHAR(256)
 LANGUAGE plpgsql
 AS $$
 BEGIN
@@ -7,7 +7,7 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION verify_user_identity(uid users.id%TYPE, passwordrhs text)
+CREATE OR REPLACE FUNCTION verify_user_identity(uid INTEGER, passwordrhs text)
 RETURNS bool
 LANGUAGE plpgsql
 AS
