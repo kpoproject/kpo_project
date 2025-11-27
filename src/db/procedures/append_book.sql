@@ -1,21 +1,23 @@
-CREATE OR REPLACE PROCEDURE append_book(uid INTEGER, book INTEGER) LANGUAGE plpgsql AS $$
--- DECLARE
---   user_collection INTEGER;
+CREATE OR REPLACE PROCEDURE append_book(uid users.id%TYPE, pswd text, cov INTEGER, fyp SMALLINT, k text, lang CHAR(3)[], t text) LANGUAGE plpgsql AS $$
   BEGIN
-    -- SELECT u.collection_id INTO user_collection FROM users u WHERE u.id = uid;
-    INSERT INTO collection_entry (collection_id, book_id) VALUES (uid, book);
+    IF (NOT verify_user_identity(uid, pswd)) THEN
+      RAISE EXCEPTION 'Bad auth token';
+    END IF;
+
+    INSERT INTO collection_entry (collection_id, cover_i, first_year_publish, key, language, title) VALUES (uid, cov, fyp, k, lang, t);
     UPDATE users SET book_count = book_count + 1 WHERE id = uid;
 
   COMMIT;
   END;
   $$;
 
-CREATE OR REPLACE PROCEDURE remove_book(uid INTEGER, book INTEGER) LANGUAGE plpgsql AS $$
--- DECLARE
---   user_collection INTEGER;
+CREATE OR REPLACE PROCEDURE remove_book(uid users.id%TYPE, pswd text, k text) LANGUAGE plpgsql AS $$
   BEGIN
-    -- SELECT u.collection_id INTO user_collection FROM users u WHERE u.id = uid;
-    DELETE FROM collection_entry WHERE collection_id = uid AND book_id = book;
+    IF (NOT verify_user_identity(uid, pswd)) THEN
+      RAISE EXCEPTION 'Bad auth token';
+    END IF;
+
+    DELETE FROM collection_entry WHERE collection_id = uid AND key = k;
     UPDATE users SET book_count = book_count - 1 WHERE id = uid;
   COMMIT;
   END;

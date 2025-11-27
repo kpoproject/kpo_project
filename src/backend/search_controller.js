@@ -1,6 +1,6 @@
 import { assert } from "./assert.js";
 
-const fetchData = async (endpoint, method, body) => {
+const fetchData = (endpoint, method, body) => {
   return fetch(endpoint, {
     method: method,
     headers: {
@@ -30,17 +30,17 @@ export class AppController {
     let response = fetchData(endpoint, "GET", options);
     return response;
   }
-  async getSavedBooks(userId) {
-    assert(userId, "Bad data for saved books request");
-    let dbResponse = await this.db.getUserBooks(userId);
+
+  async getSavedBooks(userid, password) {
+    let dbResponse = await this.db.getUserBooks(userid, password);
     return dbResponse.rows;
   }
-  async saveBook(userId, bookId) {
-    assert(userId && bookId, "Bad data for saving book request");
-    await this.db.appendBook(userId, bookId);
+
+  async saveBook(userid, password, cover, fyp, key, lang, title) {
+    await this.db.appendBook(userid, password, cover, fyp, key, lang, title);
   }
-  async deleteBook(userId, bookId) {
-    assert(userId && bookId, "Bad data for book deletion");
-    await this.db.deleteBook(userId, bookId);
+
+  async deleteBook(userid, password, key) {
+    await this.db.deleteBook(userid, password, key);
   }
 }

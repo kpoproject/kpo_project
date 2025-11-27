@@ -11,4 +11,5 @@ const db = new DatabaseController(pool);
 // let res2 = await db.deleteBook(response.rows[0].id, 2);
 // let res1 = await db.deleteUser(1);
 // let res3 = await db.getUserBooks(1);
+let res3 = await db.validateUser({ username: "a", password: "a" });
 console.log(res3);
