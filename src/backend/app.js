@@ -37,15 +37,37 @@ const try_catch_next_wrapper = async (body, req, res, next) => {
 };
 
 app.post("/search", async (req, res, next) => {
+  const addPresent = (apiResponse, dbResponse) => {
+    if (!(dbResponse && apiResponse)) {
+      throw Error("Bad api response or db response");
+    }
+    const keysFromDb = new Set(dbResponse.map((obj) => obj.key));
+
+    apiResponse.forEach((obj) => {
+      if (keysFromDb.has(obj.key)) {
+        obj.present = true;
+      }
+    });
+
+    // return ;
+  };
+
   const body = async (req, res) => {
-    const { api, query } = req.body;
+    const { api, query, userid, password } = req.body;
     assert(api && query !== undefined, "Wrong api in request on search/");
 
     let queryString = "";
     if (query) {
       queryString = "?q=" + query.trim().replaceAll(" ", "+");
     }
-    const response = await appController.getNewBooks(api + queryString, {});
+    let response = await appController.getNewBooks(api + queryString, {});
+    let dbResponse = [];
+    if (userid && password) {
+      dbResponse = await appController.getSavedBooks(userid, password);
+    }
+
+    console.log(dbResponse);
+    addPresent(response.docs, dbResponse);
 
     res.json({ api_response: response, success: response ? true : false });
   };
@@ -96,7 +118,7 @@ app.post("/deleteuser", async (req, res, next) => {
 
     let succ = await loginManager.deleteUser(userid, username, password);
     res.json({
-      success: succ ? false : true,
+      success: succ ? true : false,
     });
   };
   await try_catch_next_wrapper(body, req, res, next);
@@ -104,13 +126,35 @@ app.post("/deleteuser", async (req, res, next) => {
 
 app.post("/lib/addbook", async (req, res, next) => {
   const body = async (req, res) => {
-    const { userid, bookid, password } = req.body;
+    const {
+      userid,
+      password,
+      cover_i,
+      first_year_publish,
+      key,
+      language,
+      title,
+    } = req.body;
     assert(
-      userid && bookid && password,
+      userid &&
+        password &&
+        cover_i &&
+        first_year_publish &&
+        key &&
+        language &&
+        title,
       "Wrong token in request on lib/addbook/",
     );
 
-    let response = await appController.saveBook(userid, password, bookid);
+    let response = await appController.saveBook(
+      userid,
+      password,
+      cover_i,
+      first_year_publish,
+      key,
+      language,
+      title,
+    );
     res.json({ success: true });
   };
   await try_catch_next_wrapper(body, req, res, next);
@@ -118,13 +162,13 @@ app.post("/lib/addbook", async (req, res, next) => {
 
 app.post("/lib/removebook", async (req, res, next) => {
   const body = async (req, res) => {
-    const { userid, password, bookid } = req.body;
+    const { userid, password, key } = req.body;
     assert(
-      userid && bookid && password,
+      userid && key && password,
       "Wrong token in request on lib/removebook/",
     );
 
-    let response = await appController.deleteBook(userid, password, bookid);
+    let response = await appController.deleteBook(userid, password, key);
     res.json({ success: true });
   };
   await try_catch_next_wrapper(body, req, res, next);

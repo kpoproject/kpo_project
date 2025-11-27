@@ -15,19 +15,23 @@ export class DatabaseController {
 
   async getUserBooks(userid, password) {
     return await this.db.query(
-      "SELECT ce.book_id FROM collection_entry ce LEFT JOIN users u ON collection_id = ce.collection_id WHERE ce.collection_id = $1 AND u.password = hash_string($2) ",
+      "SELECT ce.cover_i, ce.first_year_publish, ce.key, ce.language, ce.title FROM collection_entry ce LEFT JOIN users u ON collection_id = ce.collection_id WHERE ce.collection_id = $1 AND u.password = hash_string($2)",
       [userid, password],
     );
   }
 
-  async appendBook(userid, password, bookid) {
+  async appendBook(userid, password, cover_i, fyp, key, lang, title) {
     const client = await this.db.connect();
     let response;
     try {
-      response = client.query("CALL append_book($1, $2, $3)", [
+      response = client.query("CALL append_book($1, $2, $3, $4, $5, $6, $7)", [
         userid,
         password,
-        bookid,
+        cover_i,
+        fyp,
+        key,
+        lang,
+        title,
       ]);
     } finally {
       client.release;
@@ -49,14 +53,14 @@ export class DatabaseController {
     );
   }
 
-  async deleteBook(userid, password, bookid) {
+  async deleteBook(userid, password, key) {
     const client = await this.db.connect();
     let response;
     try {
       response = client.query("CALL remove_book($1, $2, $3)", [
         userid,
         password,
-        bookid,
+        key,
       ]);
     } finally {
       client.release;

@@ -31,19 +31,16 @@ export class AppController {
     return response;
   }
 
-  // need to recieve id username and password not only id
   async getSavedBooks(userid, password) {
     let dbResponse = await this.db.getUserBooks(userid, password);
     return dbResponse.rows;
   }
 
-  // need to recieve id username and password not only id
-  async saveBook(userid, password, bookid) {
-    await this.db.appendBook(userid, password, bookid);
+  async saveBook(userid, password, cover, fyp, key, lang, title) {
+    await this.db.appendBook(userid, password, cover, fyp, key, lang, title);
   }
 
-  // need to recieve id username and password not only id
-  async deleteBook(userid, password, bookid) {
-    await this.db.deleteBook(userid, password, bookid);
+  async deleteBook(userid, password, key) {
+    await this.db.deleteBook(userid, password, key);
   }
 }
