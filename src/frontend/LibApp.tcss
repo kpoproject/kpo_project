@@ -1,9 +1,14 @@
 Screen {
     background: $surface;
+}
+
+#main-grid-container {
     layout: grid;
     grid-size: 2 3;
     grid-columns: 2fr 4fr;
-    grid-rows: 4fr 8fr 2fr;
+    grid-rows: 4fr 8fr 1.2fr;
+    width: 100%;
+    height: 100%;
 }
 
 #main-container {
@@ -83,7 +88,7 @@ Screen {
     opacity: 0;
     display: none;
 }
-    
+
 #bottom-pane {
     width: 100%;
     height: 100%;
@@ -92,7 +97,7 @@ Screen {
     border: dodgerblue;
     content-align: center middle;
 }
-    
+
 #user-info {
     width: 100%;
     height: 100%;
@@ -117,3 +122,92 @@ AuthScreen {
     border: round $accent;
     padding: 2;
 }
+
+LoginForm {
+        align: center middle;
+        width: 100%;
+        height: 100%;
+    }
+
+    .login-container {
+        width: 40;
+        height: auto;
+        border: solid $accent;
+        background: $panel;
+        align: center middle;
+    }
+
+    .title {
+        text-align: center;
+        text-style: bold;
+        margin-bottom: 1;
+        color: $accent;
+    }
+
+    .form-fields {
+        height: auto;
+        margin: 1 0;
+    }
+
+    .form-fields Label {
+        margin-bottom: 1;
+        color: $text;
+    }
+
+    .form-fields Input {
+        margin-bottom: 2;
+        width: 100%;
+    }
+
+    .buttons {
+        height: auto;
+        align: center middle;
+        margin: 1 0;
+    }
+
+    .buttons Button {
+        margin: 1 0;
+        width: 100%;
+    }
+
+    .message {
+        text-align: center;
+        margin-top: 1;
+        height: 3;
+    }
+
+    /* Стили для невалидных полей */
+    Input.-invalid {
+        border: tall $error;
+    }
+
+    Input.-valid {
+        border: tall $success 50%;
+    }
+
+    Button:disabled {
+        opacity: 0.5;
+    }
+
+    #login-btn {
+        background: $primary;
+    }
+
+    #register-btn {
+        background: $secondary;
+    }
+
+    /* Стили для ScreenPop */
+    ScreenPop {
+        align: center middle;
+        width: 100%;
+        height: 100%;
+
+    }
+
+    .screen-pop-content {
+        width: auto;
+        height: auto;
+        background: $surface;
+        border: round $accent;
+    }

@@ -3,6 +3,7 @@ from textual.widgets import Input
 from typing import Callable, Optional
 from textual.containers import Container
 
+
 class InputSection(Container):
     DEFAULT_CSS = """
     InputSection {

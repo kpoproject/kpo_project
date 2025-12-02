@@ -6,6 +6,8 @@ from typing import Callable
 
 
 class UserInfoContainer(Container):
+    username: reactive[str] = reactive("")
+    books_count: reactive[int] = reactive(0)
 
     DEFAULT_CSS = """
     UserInfoContainer {
@@ -20,13 +22,17 @@ class UserInfoContainer(Container):
     }
 
     .username {
+        height: 100%;
         text-style: bold;
         color: $text;
+        align: center middle;
         content-align: left middle;
     }
 
     .books-count {
+        height: 100%;
         color: $text-muted;
+        align: center middle;
         content-align: center middle;
     }
 
@@ -35,6 +41,8 @@ class UserInfoContainer(Container):
         min-width: 8;
         background: $success;
         color: white;
+        align: center middle;
+        content-align: center middle;
     }
     """
 
@@ -54,7 +62,7 @@ class UserInfoContainer(Container):
         yield Static(self.username, classes="username")
         yield Static(f"Книг: {self.books_count}", classes="books-count")
         yield Button(
-            "Выйти",
+            "login",
             id="logout-button",
             classes="logout-button",
             variant="error"
@@ -81,3 +89,12 @@ class UserInfoContainer(Container):
         count_widget = self.query_one(".books-count", Static)
         count_widget.update(f"Книг: {new_count}")
 
+    def update_user_info(self, username: str, books_count: int) -> None:
+        self.username = username
+        self.books_count = books_count
+
+        username_widget = self.query_one(".username", Static)
+        count_widget = self.query_one(".books-count", Static)
+
+        username_widget.update(username)
+        count_widget.update(f"Книг: {books_count}")
