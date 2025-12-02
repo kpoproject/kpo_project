@@ -114,17 +114,15 @@ class LoginForm(Container):
             return
 
         success = False
-
         if self.on_login_callback:
             success = self.on_login_callback(self.username, self.password)
-        else:
-            if self.username in self.users and self.users[self.username] == self.password:
-                success = True
 
         if success:
             message.update("[green]Успешный вход![/green]")
+            self.app.update_user_info_display()
+            self.app.save_config(self.username, self.password)
             self.close_popup()
-            self.app.hideMainContainer()
+            self.app.showMainContainer()
         else:
             message.update("[red]Неверное имя пользователя или пароль.[/red]")
 
@@ -139,17 +137,11 @@ class LoginForm(Container):
 
         if self.on_register_callback:
             success = self.on_register_callback(self.username, self.password)
-        else:
-            if self.username in self.users:
-                message.update("[red]Имя пользователя уже занято[/red]")
-                return
-
-            self.users[self.username] = self.password
-            self.save_users()
-            success = True
 
         if success:
             message.update("[green]Аккаунт успешно создан[/green]")
+            self.app.update_user_info_display()
+            self.app.save_config(self.username, self.password)
             self.close_popup()
             self.app.showMainContainer()
         else:

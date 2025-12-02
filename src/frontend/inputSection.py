@@ -51,9 +51,9 @@ class InputSection(Container):
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
         if event.input.id == "text-input":
-            self._handle_save()
+            self._handle_submit()
 
-    def _handle_save(self) -> None:
+    def _handle_submit(self) -> None:
         input_widget = self.query_one("#text-input", Input)
         text = input_widget.value.strip()
 

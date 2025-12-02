@@ -53,22 +53,26 @@ class BookContainer(Container):
                  book: dict,
                  add_to_lib: Callable[[dict], None],
                  rem_in_lib: Callable[[dict], None],
+                 is_added: bool = False,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.book = book
         self.add_to_lib = add_to_lib
         self.rem_in_lib = rem_in_lib
-        self.is_added = False
+        self.is_added = is_added
         self.focus_handler = None
         self.can_focus = True
 
     def compose(self) -> ComposeResult:
+        status_text = "Статус: Добавлена в библиотеку" if self.is_added else "Статус: Не добавлена"
+        status_class = "book-status_added" if self.is_added else "book-status_notAdded"
+
         yield Container(
             Vertical(
                 Static(self.book['title'], classes="book-title"),
                 Static(f"Автор: {self.book['author']}", classes="book-author"),
                 Static(f"Год: {self.book['year']}", classes="book-year"),
-                Static("Статус: Не добавлена", classes="book-status_notAdded", id="book-status_notAdded"),
+                Static(status_text, classes=status_class, id="book-status_notAdded"),
             ),
         )
 
