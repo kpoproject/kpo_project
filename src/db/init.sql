@@ -1,5 +1,4 @@
 CREATE DATABASE libralib;
-GRANT ALL PRIVILEGES ON DATABASE libralib TO postgres;
 
 \c libralib;
 
@@ -16,3 +15,5 @@ CREATE TABLE collection_entry (
   book_id INTEGER NOT NULL,
   UNIQUE (collection_id, book_id)
 );
+
+ALTER TABLE collection_entry ADD CONSTRAINT fk_collection_id FOREIGN KEY (collection_id) REFERENCES users (id) ON DELETE CASCADE;
