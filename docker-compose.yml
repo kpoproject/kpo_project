@@ -10,11 +10,6 @@ services:
       POSTGRES_PASSWORD: docker
       POSTGRES_PORT: 5432
 
-  frontend:
-    build:
-      context: ./src/frontend/
-      dockerfile: Dockerfile
-    #ports:
 
   db:
     build:
