@@ -1,7 +1,7 @@
 export const DB_CONFIG = {
   database: "libralib",
   user: "postgres",
-  host: "localhost",
-  port: process.env.POSTGRES_PORT,
-  password: process.env.POSTGRES_PASSWORD,
+  host: "172.21.0.2",
+  port: "5432", // process.env.POSTGRES_PORT,
+  password: "docker", //process.env.POSTGRES_PASSWORD,
 };
