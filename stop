@@ -1,3 +1,4 @@
 #!/bin/sh
 
-sudo docker compose down
+sudo docker rm -f kpo_back pdb_name
+sudo docker network rm kpo_net

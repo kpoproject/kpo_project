@@ -1,3 +1,43 @@
 #!/bin/sh
 
-sudo docker compose up
+#sudo docker compose up
+
+run_database() {
+  cd ./src/db &&
+
+  KPO_POSTGRES_DB="${db}" \
+  KPO_POSTGRES_USER="${user}" \
+  KPO_POSTGRES_HOST="${host}" \
+  KPO_POSTGRES_PASSWORD="${password}" \
+  KPO_POSTGRES_PORT="${port}" bash ./run.sh
+}
+
+run_server() {
+  cd ./src/backend
+
+  KPO_POSTGRES_DB="${db}" \
+  KPO_POSTGRES_USER="${user}" \
+  KPO_POSTGRES_HOST="${host}" \
+  KPO_POSTGRES_PASSWORD="${password}" \
+  KPO_POSTGRES_PORT="${port}" bash ./run.sh
+}
+
+main() {
+  local db="libralib"
+  local user="postgres"
+  local password="docker"
+  local port="5432"
+
+  local p=$(pwd)
+  run_database &&
+  local host=$(sudo docker network inspect kpo_net |
+    grep -oP "(?<=IPv4Address\": \")[0-9.]*") && 
+      cd ${p} && run_server
+}
+sudo docker network create \
+      -d bridge \
+      kpo_net
+main
+unset run_database
+unset run_server
+unset main
