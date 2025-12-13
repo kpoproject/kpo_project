@@ -10,7 +10,6 @@ FROM postgres:latest
 #CMD ["psql", "-U postgres -f init.sql"]
 
 COPY . .
-COPY ./setup.sh /db
 COPY init.sql /docker-entrypoint-initdb.d/
 USER root
 RUN chown postgres:postgres /docker-entrypoint-initdb.d/init.sql
