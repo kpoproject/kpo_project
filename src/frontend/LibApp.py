@@ -222,7 +222,7 @@ class LibApp(App):
         except Exception as e:
             return None
 
-    def save_config(self, username: str, password: str, userid: str) -> None:
+    def save_config(self, username: str, password: str) -> None:
         config = {
             "username": username,
             "password": password
