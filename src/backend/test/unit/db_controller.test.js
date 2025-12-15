@@ -119,10 +119,6 @@ describe("DatabaseController", () => {
 
   describe("deleteBook", () => {
     test("should call stored procedure to remove book", async () => {
-      // const mockClient = {
-      //   query: jest.fn(),
-      //   release: jest.fn(),
-      // };
       const mockResult = { rows: [] };
       mockPool.connect.mockResolvedValue(mockClient);
       mockClient.query.mockResolvedValue(mockResult);
