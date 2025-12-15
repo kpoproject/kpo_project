@@ -1,4 +1,8 @@
-const response = await fetch("http://localhost:8080/register", {
+import { assert } from "../../assert.js";
+
+const host = process.env.HOST;
+
+const response = await fetch(host + "register", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -11,8 +15,9 @@ const response = await fetch("http://localhost:8080/register", {
   return response.json();
 });
 console.log(response);
+console.assert(response.success, "register");
 
-let response2 = await fetch("http://localhost:8080/login", {
+let response2 = await fetch(host + "login", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -26,9 +31,9 @@ let response2 = await fetch("http://localhost:8080/login", {
 });
 console.log(response2);
 let user = Object(response2);
-console.log(user);
+console.assert(response2.success, "login");
 
-response2 = await fetch("http://localhost:8080/lib/addbook", {
+response2 = await fetch(host + "lib/addbook", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -46,8 +51,9 @@ response2 = await fetch("http://localhost:8080/lib/addbook", {
   return response.json();
 });
 console.log(response2);
+console.assert(response2.success, "addbook");
 
-response2 = await fetch("http://localhost:8080/lib/addbook", {
+response2 = await fetch(host + "lib/addbook", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -65,8 +71,9 @@ response2 = await fetch("http://localhost:8080/lib/addbook", {
   return response.json();
 });
 console.log(response2);
+console.assert(response2.success, "addbook2");
 
-response2 = await fetch("http://localhost:8080/lib", {
+response2 = await fetch(host + "lib", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -79,9 +86,10 @@ response2 = await fetch("http://localhost:8080/lib", {
   return response.json();
 });
 console.log(response2);
+console.assert(response2.success, "lib");
 
 // NOTE: search HERE
-response2 = await fetch("http://localhost:8080/search", {
+response2 = await fetch(host + "search", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -96,8 +104,9 @@ response2 = await fetch("http://localhost:8080/search", {
   return response.json();
 });
 console.log(response2.api_response);
+console.assert(response2.success, "search");
 
-response2 = await fetch("http://localhost:8080/lib/removebook", {
+response2 = await fetch(host + "lib/removebook", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -111,8 +120,9 @@ response2 = await fetch("http://localhost:8080/lib/removebook", {
   return response.json();
 });
 console.log(response2);
+console.assert(response2.success, "removebook");
 
-response2 = await fetch("http://localhost:8080/lib", {
+response2 = await fetch(host + "lib", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -125,8 +135,9 @@ response2 = await fetch("http://localhost:8080/lib", {
   return response.json();
 });
 console.log(response2);
+console.assert(response2.success, "removebook");
 
-response2 = await fetch("http://localhost:8080/lib/removebook", {
+response2 = await fetch(host + "lib/removebook", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -140,8 +151,9 @@ response2 = await fetch("http://localhost:8080/lib/removebook", {
   return response.json();
 });
 console.log(response2);
+console.assert(response2.success, "removebook");
 
-response2 = await fetch("http://localhost:8080/deleteuser", {
+let response3 = await fetch(host + "deleteuser", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -154,4 +166,7 @@ response2 = await fetch("http://localhost:8080/deleteuser", {
 }).then((response) => {
   return response.json();
 });
-console.log(response2);
+console.log(response3);
+assert(response2.success, "deleteuser");
+
+console.log("TEST SUCCESSS");

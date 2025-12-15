@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node app.js",
     "devstart": "nodemon app.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "test:integration": "HOST=\"http://localhost:3030/\" node --experimental-vm-modules test/integration/integration_test.js"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +16,8 @@
   "type": "module",
   "devDependencies": {
     "jest": "^30.2.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4"
   },
   "dependencies": {
     "express": "^5.1.0",

@@ -3,6 +3,7 @@ import { AppController } from "./search_controller.js";
 import { DatabaseController } from "./db/db_controller.js";
 import { Pool } from "pg";
 import { DB_CONFIG } from "./db/db_config.js";
+import { APP_CONFIG } from "./app_config.js";
 import { LoginManager } from "./login_manager.js";
 import { assert } from "./assert.js";
 
@@ -11,7 +12,7 @@ const dbController = new DatabaseController(pool);
 const appController = new AppController(dbController);
 const loginManager = new LoginManager(dbController);
 
-const PORT = 8080;
+const PORT = APP_CONFIG.PORT;
 const app = express();
 
 app.use(express.json());
@@ -48,8 +49,6 @@ app.post("/search", async (req, res, next) => {
         obj.present = true;
       }
     });
-
-    // return ;
   };
 
   const body = async (req, res) => {
@@ -66,7 +65,6 @@ app.post("/search", async (req, res, next) => {
       dbResponse = await appController.getSavedBooks(userid, password);
     }
 
-    console.log(dbResponse);
     addPresent(response.docs, dbResponse);
 
     res.json({ api_response: response, success: response ? true : false });
@@ -118,7 +116,7 @@ app.post("/deleteuser", async (req, res, next) => {
 
     let succ = await loginManager.deleteUser(userid, username, password);
     res.json({
-      success: succ ? true : false,
+      success: succ,
     });
   };
   await try_catch_next_wrapper(body, req, res, next);

@@ -34,7 +34,7 @@ export class DatabaseController {
         title,
       ]);
     } finally {
-      client.release;
+      client.release();
     }
     return response;
   }
@@ -63,7 +63,7 @@ export class DatabaseController {
         key,
       ]);
     } finally {
-      client.release;
+      client.release();
     }
     return response;
   }
