@@ -8,7 +8,7 @@ export class LoginManager {
 
   async login(username, password) {
     let dbResponse = await this.db.getUser(username, password);
-    console.log(dbResponse);
+    // console.log(dbResponse);
     return dbResponse.rows ? dbResponse.rows[0].id : undefined;
   }
 
