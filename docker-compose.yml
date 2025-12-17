@@ -10,7 +10,6 @@ services:
       POSTGRES_PASSWORD: docker
       POSTGRES_PORT: 5432
 
-
   db:
     build:
       context: ./src/db/
@@ -28,12 +27,6 @@ services:
     #      size: 134217728 # 128*2^20 bytes = 128Mb
     environment:
       POSTGRES_PASSWORD: example
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
 
 volumes:
   kpo-postgresql-data:
