@@ -45,7 +45,7 @@ describe("DatabaseController", () => {
       const mockResult = { rows: [{ title: "Book 1" }] };
       mockPool.query.mockResolvedValue(mockResult);
 
-      const result = await dbController.getUserBooks(123, "password");
+      const result = await dbController.getUserBooks(123, "password", "");
       expect(mockPool.query).toHaveBeenCalled();
       expect(result).toBe(mockResult);
     });

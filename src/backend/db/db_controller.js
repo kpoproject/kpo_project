@@ -21,7 +21,6 @@ export class DatabaseController {
       q = search_query + "|" + search_query.replaceAll(" ", "|");
     }
     return await this.db.query(
-      // "SELECT ce.cover_i, ce.first_year_publish, ce.key, ce.language, ce.title FROM collection_entry ce LEFT JOIN users u ON u.id = ce.collection_id WHERE ce.collection_id = $1 AND u.password = hash_string($2)",
       String.raw`select ce.cover_i, ce.first_year_publish, ce.key, ce.language, ce.title from collection_entry ce LEFT JOIN users u ON u.id = ce.collection_id WHERE ce.collection_id=$1 AND u.password=hash_string($2) AND ce.title ~* $3 ORDER BY
       (CASE
         WHEN title ILIKE $4 THEN 1
