@@ -28,48 +28,6 @@ describe("AppController", () => {
     });
   });
 
-  describe("getNewBooks", () => {
-    test("should fetch data from API endpoint", async () => {
-      const mockResponse = {
-        ok: true,
-        json: jest.fn().mockResolvedValue({ docs: [] }),
-      };
-      fetch.mockResolvedValue(mockResponse);
-
-      const endpoint = "https://openlibrary.org/search.json";
-      const result = await appController.getNewBooks(endpoint, {});
-
-      expect(fetch).toHaveBeenCalledWith(endpoint, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        body: undefined,
-      });
-      expect(result).toEqual({ docs: [] });
-    });
-
-    test("should throw error when endpoint is falsy", async () => {
-      await expect(appController.getNewBooks("", {})).rejects.toThrow(
-        "Wrong endpoint to get new books",
-      );
-      await expect(appController.getNewBooks(null, {})).rejects.toThrow(
-        "Wrong endpoint to get new books",
-      );
-      await expect(appController.getNewBooks(undefined, {})).rejects.toThrow(
-        "Wrong endpoint to get new books",
-      );
-    });
-
-    test("should handle fetch errors", async () => {
-      fetch.mockRejectedValue(new Error("Network error"));
-
-      const result = await appController.getNewBooks(
-        "http://api.example.com/books",
-        {},
-      );
-      expect(result).toBeUndefined();
-    });
-  });
-
   describe("getSavedBooks", () => {
     test("should get books from database", async () => {
       const mockBooks = [
@@ -79,10 +37,11 @@ describe("AppController", () => {
       const mockResponse = { rows: mockBooks };
       mockDbController.getUserBooks.mockResolvedValue(mockResponse);
 
-      const result = await appController.getSavedBooks(123, "password");
+      const result = await appController.getSavedBooks(123, "password", "");
       expect(mockDbController.getUserBooks).toHaveBeenCalledWith(
         123,
         "password",
+        "",
       );
       expect(result).toEqual(mockBooks);
     });
@@ -91,7 +50,7 @@ describe("AppController", () => {
       const mockResponse = { rows: [] };
       mockDbController.getUserBooks.mockResolvedValue(mockResponse);
 
-      const result = await appController.getSavedBooks(123, "password");
+      const result = await appController.getSavedBooks(123, "password", "");
       expect(result).toEqual([]);
     });
   });

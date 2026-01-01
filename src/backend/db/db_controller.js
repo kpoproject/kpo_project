@@ -1,3 +1,5 @@
+import { assert } from "../assert.js";
+
 export class DatabaseController {
   constructor(dbPool) {
     if (!dbPool) {
@@ -13,10 +15,21 @@ export class DatabaseController {
     );
   }
 
-  async getUserBooks(userid, password) {
+  async getUserBooks(userid, password, search_query) {
+    let q = "";
+    if (search_query != "") {
+      q = search_query + "|" + search_query.replaceAll(" ", "|");
+    }
     return await this.db.query(
-      "SELECT ce.cover_i, ce.first_year_publish, ce.key, ce.language, ce.title FROM collection_entry ce LEFT JOIN users u ON collection_id = ce.collection_id WHERE ce.collection_id = $1 AND u.password = hash_string($2)",
-      [userid, password],
+      String.raw`select ce.cover_i, ce.first_year_publish, ce.key, ce.language, ce.title from collection_entry ce LEFT JOIN users u ON u.id = ce.collection_id WHERE ce.collection_id=$1 AND u.password=hash_string($2) AND ce.title ~* $3 ORDER BY
+      (CASE
+        WHEN title ILIKE $4 THEN 1
+        WHEN title ILIKE $4 THEN 2
+        WHEN title ILIKE $4 THEN 3
+        ELSE 4
+      END),
+      title`,
+      [userid, password, q, search_query],
     );
   }
 

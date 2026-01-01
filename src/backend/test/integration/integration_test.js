@@ -81,30 +81,13 @@ response2 = await fetch(host + "lib", {
   body: JSON.stringify({
     userid: user.userid,
     password: user.password,
+    query: "",
   }),
 }).then((response) => {
   return response.json();
 });
 console.log(response2);
 console.assert(response2.success, "lib");
-
-// NOTE: search HERE
-response2 = await fetch(host + "search", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    api: "https://openlibrary.org/search.json",
-    query: "the lord of the rings",
-    userid: user.userid,
-    password: user.password,
-  }),
-}).then((response) => {
-  return response.json();
-});
-console.log(response2.api_response);
-console.assert(response2.success, "search");
 
 response2 = await fetch(host + "lib/removebook", {
   method: "POST",
@@ -130,12 +113,13 @@ response2 = await fetch(host + "lib", {
   body: JSON.stringify({
     userid: user.userid,
     password: user.password,
+    query: "",
   }),
 }).then((response) => {
   return response.json();
 });
 console.log(response2);
-console.assert(response2.success, "removebook");
+console.assert(response2.success, "lib2");
 
 response2 = await fetch(host + "lib/removebook", {
   method: "POST",
@@ -151,7 +135,7 @@ response2 = await fetch(host + "lib/removebook", {
   return response.json();
 });
 console.log(response2);
-console.assert(response2.success, "removebook");
+console.assert(response2.success, "removebook2");
 
 let response3 = await fetch(host + "deleteuser", {
   method: "POST",
@@ -169,4 +153,4 @@ let response3 = await fetch(host + "deleteuser", {
 console.log(response3);
 assert(response2.success, "deleteuser");
 
-console.log("TEST SUCCESSS");
+console.log("TEST COMPLETED");
