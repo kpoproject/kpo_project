@@ -1,6 +1,6 @@
 CREATE OR REPLACE PROCEDURE append_book(uid INTEGER, pswd text, cov INTEGER, fyp SMALLINT, k text, lang CHAR(3)[], t text) LANGUAGE plpgsql AS $$
   BEGIN
-    IF (NOT verify_user_identity(uid, pswd)) THEN
+    IF (NOT verify_user_idedtity(uid, pswd)) THEN
       RAISE EXCEPTION 'Bad auth token';
     END IF;
 
