@@ -1,4 +1,17 @@
 #!/bin/bash
 
-cd ./src/frontend/
-sudo docker compose run --rm frontend
+run_client() {
+
+}
+
+run_client
+
+main() {
+  local 
+
+}
+
+main
+
+unset run_client
+unset main
