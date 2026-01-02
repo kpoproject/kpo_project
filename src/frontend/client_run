@@ -1,3 +1,4 @@
 #!/bin/bash
 
 sudo docker compose run --rm frontend
+sudo docker 

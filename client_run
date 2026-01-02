@@ -1,14 +1,16 @@
 #!/bin/bash
 
 run_client() {
-
+  cd ./src/frontend/ &&
+  KPO_TERM="${term}" \
+  bash ./run.sh
 }
 
 run_client
 
 main() {
-  local 
-
+  local term="xterm-256color"
+  run_client
 }
 
 main
